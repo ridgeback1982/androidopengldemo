@@ -40,14 +40,67 @@ public class CameraCube implements OnFrameAvailableListener {
    private int previewWidth = 1280;
    private int previewHeight = 720;
   
-   private float[] vertices = { // Vertices for a face
-      -1.0f, -1.0f, 1.0f,  // 0. left-bottom-front
-       1.0f, -1.0f, 1.0f,  // 1. right-bottom-front
-      -1.0f,  1.0f, 1.0f,  // 2. left-top-front
-       1.0f,  1.0f, 1.0f   // 3. right-top-front
+   private int render_mode = 1;
+
+   private float[] vertices = {  // Vertices of the 6 faces
+      // FRONT
+      -1.0f, -1.0f,  1.0f,  // 0. left-bottom-front
+       1.0f, -1.0f,  1.0f,  // 1. right-bottom-front
+      -1.0f,  1.0f,  1.0f,  // 2. left-top-front
+       1.0f,  1.0f,  1.0f,  // 3. right-top-front
+      // BACK
+       1.0f, -1.0f, -1.0f,  // 6. right-bottom-back
+      -1.0f, -1.0f, -1.0f,  // 4. left-bottom-back
+       1.0f,  1.0f, -1.0f,  // 7. right-top-back
+      -1.0f,  1.0f, -1.0f,  // 5. left-top-back
+      // LEFT
+      -1.0f, -1.0f, -1.0f,  // 4. left-bottom-back
+      -1.0f, -1.0f,  1.0f,  // 0. left-bottom-front 
+      -1.0f,  1.0f, -1.0f,  // 5. left-top-back
+      -1.0f,  1.0f,  1.0f,  // 2. left-top-front
+      // RIGHT
+       1.0f, -1.0f,  1.0f,  // 1. right-bottom-front
+       1.0f, -1.0f, -1.0f,  // 6. right-bottom-back
+       1.0f,  1.0f,  1.0f,  // 3. right-top-front
+       1.0f,  1.0f, -1.0f,  // 7. right-top-back
+      // TOP
+      -1.0f,  1.0f,  1.0f,  // 2. left-top-front
+       1.0f,  1.0f,  1.0f,  // 3. right-top-front
+      -1.0f,  1.0f, -1.0f,  // 5. left-top-back
+       1.0f,  1.0f, -1.0f,  // 7. right-top-back
+      // BOTTOM
+      -1.0f, -1.0f, -1.0f,  // 4. left-bottom-back
+       1.0f, -1.0f, -1.0f,  // 6. right-bottom-back
+      -1.0f, -1.0f,  1.0f,  // 0. left-bottom-front
+       1.0f, -1.0f,  1.0f   // 1. right-bottom-front
    };
-  
+   
    float[] texCoords = { // Texture coords for the above face (NEW)
+      0.0f, 1.0f,  // A. left-bottom (NEW)
+      1.0f, 1.0f,  // B. right-bottom (NEW)
+      0.0f, 0.0f,  // C. left-top (NEW)
+      1.0f, 0.0f,   // D. right-top (NEW)
+      //the same
+      0.0f, 1.0f,  // A. left-bottom (NEW)
+      1.0f, 1.0f,  // B. right-bottom (NEW)
+      0.0f, 0.0f,  // C. left-top (NEW)
+      1.0f, 0.0f,   // D. right-top (NEW)
+      //the same
+      0.0f, 1.0f,  // A. left-bottom (NEW)
+      1.0f, 1.0f,  // B. right-bottom (NEW)
+      0.0f, 0.0f,  // C. left-top (NEW)
+      1.0f, 0.0f,   // D. right-top (NEW)
+      //the same
+      0.0f, 1.0f,  // A. left-bottom (NEW)
+      1.0f, 1.0f,  // B. right-bottom (NEW)
+      0.0f, 0.0f,  // C. left-top (NEW)
+      1.0f, 0.0f,   // D. right-top (NEW)
+      //the same
+      0.0f, 1.0f,  // A. left-bottom (NEW)
+      1.0f, 1.0f,  // B. right-bottom (NEW)
+      0.0f, 0.0f,  // C. left-top (NEW)
+      1.0f, 0.0f,   // D. right-top (NEW)
+      //the same
       0.0f, 1.0f,  // A. left-bottom (NEW)
       1.0f, 1.0f,  // B. right-bottom (NEW)
       0.0f, 0.0f,  // C. left-top (NEW)
@@ -70,7 +123,6 @@ public class CameraCube implements OnFrameAvailableListener {
       texBuffer = tbb.asFloatBuffer();
       texBuffer.put(texCoords);
       texBuffer.position(0);
-
    }
    
    // Draw the shape
@@ -96,34 +148,41 @@ public class CameraCube implements OnFrameAvailableListener {
       gl.glTexCoordPointer(2, GL10.GL_FLOAT, 0, texBuffer); // Define texture-coords buffer (NEW)
       OpenGLRenderer.checkGLError(gl, "glTexCoordPointer");
       
-      // Front
-      gl.glDrawArrays(GL10.GL_TRIANGLE_STRIP, 0, 4);
-      OpenGLRenderer.checkGLError(gl, "glDrawArrays");
-      
-      // Right - Rotate 90 degree about y-axis
-      gl.glRotatef(90.0f, 0.0f, 1.0f, 0.0f);
-      gl.glDrawArrays(GL10.GL_TRIANGLE_STRIP, 0, 4);
-      OpenGLRenderer.checkGLError(gl, "glDrawArrays");
-
-      // Back - Rotate another 90 degree about y-axis
-      gl.glRotatef(90.0f, 0.0f, 1.0f, 0.0f);
-      gl.glDrawArrays(GL10.GL_TRIANGLE_STRIP, 0, 4);
-      OpenGLRenderer.checkGLError(gl, "glDrawArrays");
-
-      // Left - Rotate another 90 degree about y-axis
-      gl.glRotatef(90.0f, 0.0f, 1.0f, 0.0f);
-      gl.glDrawArrays(GL10.GL_TRIANGLE_STRIP, 0, 4);
-      OpenGLRenderer.checkGLError(gl, "glDrawArrays");
-
-      // Bottom - Rotate 90 degree about x-axis
-      gl.glRotatef(90.0f, 1.0f, 0.0f, 0.0f);
-      gl.glDrawArrays(GL10.GL_TRIANGLE_STRIP, 0, 4);
-      OpenGLRenderer.checkGLError(gl, "glDrawArrays");
-      
-      // Top - Rotate another 180 degree about x-axis
-      gl.glRotatef(180.0f, 1.0f, 0.0f, 0.0f);
-      gl.glDrawArrays(GL10.GL_TRIANGLE_STRIP, 0, 4);
-      OpenGLRenderer.checkGLError(gl, "glDrawArrays");
+      if (render_mode == 0) {
+	      // Front
+	      gl.glDrawArrays(GL10.GL_TRIANGLE_STRIP, 0, 4);
+	      OpenGLRenderer.checkGLError(gl, "glDrawArrays");
+	      
+	      // Right - Rotate 90 degree about y-axis
+	      gl.glRotatef(90.0f, 0.0f, 1.0f, 0.0f);
+	      gl.glDrawArrays(GL10.GL_TRIANGLE_STRIP, 0, 4);
+	      OpenGLRenderer.checkGLError(gl, "glDrawArrays");
+	
+	      // Back - Rotate another 90 degree about y-axis
+	      gl.glRotatef(90.0f, 0.0f, 1.0f, 0.0f);
+	      gl.glDrawArrays(GL10.GL_TRIANGLE_STRIP, 0, 4);
+	      OpenGLRenderer.checkGLError(gl, "glDrawArrays");
+	
+	      // Left - Rotate another 90 degree about y-axis
+	      gl.glRotatef(90.0f, 0.0f, 1.0f, 0.0f);
+	      gl.glDrawArrays(GL10.GL_TRIANGLE_STRIP, 0, 4);
+	      OpenGLRenderer.checkGLError(gl, "glDrawArrays");
+	
+	      // Bottom - Rotate 90 degree about x-axis
+	      gl.glRotatef(90.0f, 1.0f, 0.0f, 0.0f);
+	      gl.glDrawArrays(GL10.GL_TRIANGLE_STRIP, 0, 4);
+	      OpenGLRenderer.checkGLError(gl, "glDrawArrays");
+	      
+	      // Top - Rotate another 180 degree about x-axis
+	      gl.glRotatef(180.0f, 1.0f, 0.0f, 0.0f);
+	      gl.glDrawArrays(GL10.GL_TRIANGLE_STRIP, 0, 4);
+	      OpenGLRenderer.checkGLError(gl, "glDrawArrays");
+      }
+      else if (render_mode == 1) {
+	      for(int i=0;i<6;i++ ){
+	    	  gl.glDrawArrays(GL10.GL_TRIANGLE_STRIP, i*4, 4);
+	      }
+      }
   
       gl.glDisableClientState(GL10.GL_TEXTURE_COORD_ARRAY);  // Disable texture-coords-array (NEW)
       gl.glDisableClientState(GL10.GL_VERTEX_ARRAY);
@@ -145,8 +204,8 @@ public class CameraCube implements OnFrameAvailableListener {
       // Set up texture filters
       gl.glTexParameterf(GLES11Ext.GL_TEXTURE_EXTERNAL_OES, GL10.GL_TEXTURE_MIN_FILTER, GL10.GL_NEAREST);
       gl.glTexParameterf(GLES11Ext.GL_TEXTURE_EXTERNAL_OES, GL10.GL_TEXTURE_MAG_FILTER, GL10.GL_LINEAR);
-      gl.glTexParameterf(GLES11Ext.GL_TEXTURE_EXTERNAL_OES, GL10.GL_TEXTURE_WRAP_S, GL10.GL_CLAMP_TO_EDGE);
-      gl.glTexParameterf(GLES11Ext.GL_TEXTURE_EXTERNAL_OES, GL10.GL_TEXTURE_WRAP_T, GL10.GL_CLAMP_TO_EDGE);
+      //gl.glTexParameterf(GLES11Ext.GL_TEXTURE_EXTERNAL_OES, GL10.GL_TEXTURE_WRAP_S, GL10.GL_CLAMP_TO_EDGE);
+      //gl.glTexParameterf(GLES11Ext.GL_TEXTURE_EXTERNAL_OES, GL10.GL_TEXTURE_WRAP_T, GL10.GL_CLAMP_TO_EDGE);
       OpenGLRenderer.checkGLError(gl, "glTexParameterf");
       
       //now, it is in thread of GLSurfaceView

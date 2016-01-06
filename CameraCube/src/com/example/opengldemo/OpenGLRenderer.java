@@ -15,7 +15,9 @@ public class OpenGLRenderer implements Renderer {
 		private GLSurfaceView view  = null;
         private CameraCube mCube = null;
         private TextureWall mWall = null;
-        private float mCubeRotation;
+        private float mCubeRotation = 0;
+        private float mWallScaleFactor = (float) 12.0;
+        private int bounce = -1;
 
         // Constructor
         public OpenGLRenderer(Context context, GLSurfaceView view) {
@@ -53,10 +55,14 @@ public class OpenGLRenderer implements Renderer {
             
             //draw background
             gl.glLoadIdentity();         
-            gl.glScalef(10, 10, 1);
+            gl.glScalef(mWallScaleFactor, mWallScaleFactor, 1);
             mWall.draw(gl);
                 
-            mCubeRotation -= 0.3f; 
+            mCubeRotation -= 0.4f; 
+            
+            mWallScaleFactor += bounce*(0.015f);
+            if (mWallScaleFactor < 8 || mWallScaleFactor > 13)
+            	bounce *= -1;
         }
 
         @Override
