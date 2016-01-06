@@ -3,6 +3,7 @@ this repo is for who want to learn and use OpenGL on Android platform for his wo
 
 Book list: 
 - http://learnopengl-cn.readthedocs.org/zh/latest/
+- eng version: http://learnopengl.com/
 
 For **CameraCube**, it is based on OpenGL ES 1.0, which is not compatible with OpenGL ES 2.0. GLSL is not supported here. I use GLSurfaceView for rendering, instead of SurfaceView, for simplicity. This project is just a warmup. I will not adopt OpenGL ES 1.0 anymore. 
 
